@@ -19,3 +19,22 @@ new Vue({
   router,
   render: h => h(App)
 }).$mount('#app')
+
+// Ensure we checked auth before each page load.
+router.beforeEach((to, from, next) => {
+  
+  	//Promise.all([store.dispatch(VERIFY_AUTH)]).then(res => {
+	if (to.matched.some(record => record.meta.requiresAuth)) {
+		if(!store.getters.isAuthenticated){
+			next({ name: 'login' });
+		}
+		else {
+			next()
+		}
+	}
+	else {
+		next()
+	}
+
+ 
+});

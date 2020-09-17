@@ -15,7 +15,11 @@ const routes = [
 			{
 				path: '/dashboard',
 				name: 'dashboard',
-				component: Dashboard
+				component: Dashboard,
+				meta: {
+					requiresAuth: true,
+					title: 'Dashboard'
+				}
 			}
 		],
 	},
@@ -27,7 +31,9 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  routes
+	mode: 'history',
+	base: process.env.VUE_APP_ROUTE_BASE,
+	routes
 })
 
 export default router
