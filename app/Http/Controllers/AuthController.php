@@ -20,8 +20,8 @@ class AuthController extends Controller
     public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
-        $this->middleware('jwt', ['except' => ['login', 'refresh']]);
-        //$this->middleware('auth:api', ['except' => ['login']]);
+     //   $this->middleware('jwt', ['except' => ['login', 'refresh']]);
+        $this->middleware('auth:api', ['except' => ['login']]);
 
     }
 
@@ -39,7 +39,11 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         
-        $userLogin = User::where('employee_no', $user->employee_no)->first();
+        $userLogin = User::with('info')->where('employee_no', $user->employee_no)->select(
+            'id', 
+            'employee_no'
+        )->first();
+
         $userToken = JWTAuth::fromUser($userLogin);
       
         return $this->respondWithToken($userToken);

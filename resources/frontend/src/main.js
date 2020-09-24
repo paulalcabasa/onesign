@@ -2,11 +2,14 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import { BootstrapVue, IconsPlugin  } from 'bootstrap-vue'
+import axios from 'axios';
 
 // Install BootstrapVue
 Vue.use(BootstrapVue)
 // Optionally install the BootstrapVue icon components plugin
 Vue.use(IconsPlugin)
+// Axios
+Vue.prototype.$axios = axios 
 
 Vue.config.productionTip = false
 
@@ -19,22 +22,3 @@ new Vue({
   router,
   render: h => h(App)
 }).$mount('#app')
-
-// Ensure we checked auth before each page load.
-router.beforeEach((to, from, next) => {
-  
-  	//Promise.all([store.dispatch(VERIFY_AUTH)]).then(res => {
-	if (to.matched.some(record => record.meta.requiresAuth)) {
-		if(!store.getters.isAuthenticated){
-			next({ name: 'login' });
-		}
-		else {
-			next()
-		}
-	}
-	else {
-		next()
-	}
-
- 
-});

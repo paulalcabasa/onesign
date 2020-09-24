@@ -8,7 +8,7 @@
                     <b-form>
                       
                         <b-input-group
-                            :size="lg"
+                         
                             class="mb-3"
                         > 
                             <b-input-group-prepend>
@@ -18,17 +18,17 @@
                         </b-input-group>
                   
                         <b-input-group
-                            :size="lg"
+                          
                             class="mb-3"
                         >
                             <b-input-group-prepend>
                                 <span class="input-group-text"><b-icon icon="key-fill"></b-icon></span>
                             </b-input-group-prepend>
-                            <b-form-input placeholder="Password" v-model="password"></b-form-input>
+                            <b-form-input placeholder="Password" type="password" v-model="password"></b-form-input>
                         </b-input-group>
 
 
-                        <b-btn variant="primary" >Sign in</b-btn>
+                        <b-btn variant="primary" @click="submit">Sign in</b-btn>
                         <b-link href="forgot_password" class="float-right">Forgot your password?</b-link>
                       </b-form>
                 </b-card>
@@ -65,30 +65,44 @@
     }
 </style>
 <script>
-  export default {
-    computed: {
-      state() {
-        //return this.name.length >= 4 ? true : false
-      },
-      invalidFeedback() {
-        if (this.name.length > 4) {
-          return ''
-        } else if (this.name.length > 0) {
-          return 'Enter at least 4 characters'
-        } else {
-          return 'Please enter something'
-        }
-      },
-      validFeedback() {
-        return this.state === true ? 'Thank you' : ''
-      }
-    },
-    data() {
-      return {
-        name: '',
-        username: '',
-        password: ''
-      }
-    }
+export default {
+	data() {
+		return {
+			name: '',
+			username: '',
+			password: ''
+		}
+	},
+	methods : {
+		submit(){
+			this.$axios.post('api/auth/login', {
+				username : this.username,
+				password : this.password
+			}).then(res => {
+				localStorage.setItem('os-token', res.data.access_token);
+				this.$router.push('dashboard');
+			}).catch(err => {
+				console.log(err);
+			});
+		}
+	},
+	computed: {
+		state() {
+			return this.name.length >= 4 ? true : false
+		},
+		invalidFeedback() {
+			if (this.name.length > 4) {
+				return ''
+			} else if (this.name.length > 0) {
+				return 'Enter at least 4 characters'
+			} else {
+				return 'Please enter something'
+			}
+		},
+		validFeedback() {
+			return this.state === true ? 'Thank you' : ''
+		}
+	},
+    
   }
 </script>

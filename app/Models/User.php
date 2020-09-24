@@ -14,6 +14,7 @@ class User extends Authenticatable implements JWTSubject
     protected $table = "ipc_central.employee_masterfile_tab";
     protected $primaryKey = "id";
 
+    protected $fillable = ['employee_no', 'id', 'first_name', 'middle_name', 'last_name'];
     // Rest omitted for brevity
 
     /**
@@ -36,29 +37,11 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    
+    public function info()
+    {
+        return $this->belongsTo('App\Models\UserDetail', 'id', 'employee_id')->select(array('employee_id','first_name', 'middle_name', 'last_name'));
+    }
 
-    // public function authenticate($credentials)
-    // {
-       
-    //     $sql = "SELECT emt.id employee_id,
-    //                 info.first_name,
-    //                 info.middle_name,
-    //                 info.last_name,
-    //                 emt.employee_no
-    //             FROM ipc_central.employee_masterfile_tab emt
-    //                 LEFT JOIN ipc_central.password_tab pwd
-    //                     ON pwd.employee_id = emt.id
-    //                 LEFT JOIN ipc_central.personal_information_tab info
-    //                     ON info.employee_id = emt.id
-    //             WHERE emt.employee_no = :username
-    //                 AND pwd.password = :password
-    //                 AND emt.status_id IN (1,2,3,4)";
-    //     $query = DB::connection('ipc_central')->select($sql, [
-    //         'username' => $credentials['username'], 
-    //         'password' => $credentials['password']
-    //     ]);
-    //     return $query;
-    // }
+    
 
 }

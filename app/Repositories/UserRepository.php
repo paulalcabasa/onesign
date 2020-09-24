@@ -4,7 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\UserRepositoryInterface;
 use App\Models\User;
-use App\Models\UserDetails;
+use App\Models\UserDetail;
 use App\Models\UserPassword;
 use DB;
 

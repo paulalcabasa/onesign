@@ -147,7 +147,7 @@ export default {
 	computed: {
 		visibleCtr() {
 			var ctr = 0;
-			this.systems.map( (data,index) => {
+			this.systems.map( (data) => {
 				if(data.display){
 					ctr++;
 				}
