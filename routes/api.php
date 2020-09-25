@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::get('test', 'FrontendController@test');
+Route::get('pending', 'ApprovalController@getPending');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
