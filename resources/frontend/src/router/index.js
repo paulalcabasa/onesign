@@ -2,9 +2,11 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Dashboard from '@/views/Dashboard.vue';
 import Login from '@/views/Login.vue';
-
 import Layout from '@/views/layout/Layout';
+import Profile from '@/views/Profile';
+
 Vue.use(VueRouter) 
+
 
 const routes = [
 	{
@@ -16,9 +18,16 @@ const routes = [
 				path: '/dashboard',
 				name: 'dashboard',
 				component: Dashboard,
-				meta: {
-					requiresAuth: true,
-					title: 'Dashboard'
+				meta : {
+					requiresAuth : true
+				}
+			},
+			{
+				path: '/profile',
+				name : 'profile',
+				component : Profile,
+				meta : {
+					requiresAuth : true
 				}
 			}
 		],
@@ -26,7 +35,8 @@ const routes = [
 	{
 		path: '/login',
 		name: 'login',
-		component: Login
+		component: Login,
+		
 	}
 ]
 

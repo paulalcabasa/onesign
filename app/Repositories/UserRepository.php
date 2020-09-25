@@ -18,8 +18,12 @@ class UserRepository implements UserRepositoryInterface
 
     public function authenticate($credentials)
     {
-      
-        $sql = "SELECT emt.id employee_id,
+        
+        $user = User::where([
+            ['employee_no' , $credentials['username']],
+            ['password' , $credentials['password']],
+        ])->first();
+        /* $sql = "SELECT emt.id employee_id,
                     info.first_name,
                     info.middle_name,
                     info.last_name,
@@ -28,15 +32,15 @@ class UserRepository implements UserRepositoryInterface
                     LEFT JOIN ipc_central.password_tab pwd
                         ON pwd.employee_id = emt.id
                     LEFT JOIN ipc_central.personal_information_tab info
-                        ON info.employee_id = emt.id
-                WHERE emt.employee_no = :username
-                    AND pwd.password = :password
+                        ON    info.employee_id = emt.id
+                        WHERE emt.employee_no  = :username
+                        AND   pwd.password     = :password
                     AND emt.status_id IN (1,2,3,4)";
         $auth = DB::connection('ipc_central')->select($sql, [
-            'username' => $credentials['username'], 
+            'username' => $credentials['username'],
             'password' => $credentials['password']
-        ]);
+        ]); */
   
-        return !empty($auth) ? $auth[0] : $auth;
+        return $user;
     }
 }

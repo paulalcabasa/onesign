@@ -33,18 +33,14 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['username', 'password']);
+        
         $user = $this->userRepository->authenticate($credentials);
-    
+        
         if(empty($user)){
             return response()->json(['error' => 'Unauthorized'], 401);
         }
         
-        $userLogin = User::with('info')->where('employee_no', $user->employee_no)->select(
-            'id', 
-            'employee_no'
-        )->first();
-
-        $userToken = JWTAuth::fromUser($userLogin);
+        $userToken = JWTAuth::fromUser($user);
       
         return $this->respondWithToken($userToken);
     }

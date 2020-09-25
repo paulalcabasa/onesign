@@ -32,7 +32,7 @@ export default {
 				{
 					system_name: 'System 1',
 					count: 10,
-					variant: 'primary',
+					variant: 'dark',
 					icon: 'arrow-clockwise',
 					text:'white',
 					display: true
@@ -40,7 +40,7 @@ export default {
 				{
 					system_name: 'System 2',
 					count: 10,
-					variant: 'primary',
+					variant: 'dark',
 					icon: 'arrow-clockwise',
 					text:'white',
 					display: true
@@ -48,7 +48,7 @@ export default {
 				{
 					system_name: 'System 3',
 					count: 10,
-					variant: 'primary',
+					variant: 'dark',
 					icon: 'arrow-clockwise',
 					text:'white',
 					display: true
@@ -56,7 +56,7 @@ export default {
 				{
 					system_name: 'System 4',
 					count: 10,
-					variant: 'primary',
+					variant: 'dark',
 					icon: 'arrow-clockwise',
 					text:'white',
 					display: true
@@ -120,6 +120,9 @@ export default {
 
 			]
 		}
+	},
+	mounted(){
+		
 	},
 	methods: {
 		toggleSystems(){

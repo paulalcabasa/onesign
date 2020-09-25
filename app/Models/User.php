@@ -11,10 +11,10 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
     protected $connection = "ipc_central";
-    protected $table = "ipc_central.employee_masterfile_tab";
-    protected $primaryKey = "id";
+    protected $table = "ipc_central.users_v";
+    protected $primaryKey = "employee_id";
 
-    protected $fillable = ['employee_no', 'id', 'first_name', 'middle_name', 'last_name'];
+    protected $fillable = ['employee_id', 'employee_no', 'first_name', 'middle_name', 'last_name'];
     // Rest omitted for brevity
 
     /**

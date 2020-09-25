@@ -29,7 +29,7 @@
 
 
                         <b-btn variant="primary" @click="submit">Sign in</b-btn>
-                        <b-link href="forgot_password" class="float-right">Forgot your password?</b-link>
+                        <b-link href="#" @click.prevent="test" class="float-right">Forgot your password?</b-link>
                       </b-form>
                 </b-card>
             </div>
@@ -65,6 +65,10 @@
     }
 </style>
 <script>
+
+import { LOGIN } from "@/store/auth.module";
+
+
 export default {
 	data() {
 		return {
@@ -72,19 +76,22 @@ export default {
 			username: '',
 			password: ''
 		}
-	},
+    },
+    mounted() {
+        if(this.$store.getters.isAuthenticated){
+            this.$router.push({ name: "dashboard" });
+        }
+    },
 	methods : {
+       
 		submit(){
-			this.$axios.post('api/auth/login', {
-				username : this.username,
-				password : this.password
-			}).then(res => {
-				localStorage.setItem('os-token', res.data.access_token);
-				this.$router.push('dashboard');
-			}).catch(err => {
-				console.log(err);
-			});
-		}
+            const username = this.username;
+            const password = this.password;
+            this.$store.dispatch(LOGIN, { username, password }).then( () => {
+                this.$router.push('dashboard');
+            });
+        },
+    
 	},
 	computed: {
 		state() {
