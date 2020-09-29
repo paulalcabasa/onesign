@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::get('test', 'FrontendController@test');
-Route::get('pending', 'ApprovalController@getPending');
+
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
@@ -32,5 +32,11 @@ Route::group([
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
   
+});
+
+
+Route::group(['middleware' => 'jwt'], function () {
+
+   Route::get('pending', 'ApprovalController@getPending');
 
 });

@@ -17,7 +17,8 @@ const state = {
     user : {},
     token: '',
     message : '',
-    error : {}
+    error : {},
+    testVar : 'paul'
 };
 
 const getters = {

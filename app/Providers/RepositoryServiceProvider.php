@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Repositories\UserRepository;
 use App\Repositories\UserRepositoryInterface;
+use App\Repositories\ApprovalApiRepository;
+use App\Repositories\ApprovalApiRepositoryInterface;
 
 class RepositoryServiceProvider extends ServiceProvider
 {
@@ -29,5 +31,6 @@ class RepositoryServiceProvider extends ServiceProvider
         //
         
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
+        $this->app->bind(ApprovalApiRepositoryInterface::class, ApprovalApiRepository::class);
     }
 }

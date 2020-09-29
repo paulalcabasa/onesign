@@ -21,6 +21,9 @@
 <script>
 import Statistics from '@/components/Statistics.vue';
 import Approval from '@/components/Approval.vue';
+import { mapGetters } from 'vuex';
+import { GET_APPROVAL } from '@/store/approval.module';
+
 export default {
 	components : {
 		Statistics,
@@ -28,106 +31,21 @@ export default {
 	},
 	data() { 
 		return {
-			systems : [
-				{
-					system_name: 'System 1',
-					count: 10,
-					variant: 'dark',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: true
-				},
-				{
-					system_name: 'System 2',
-					count: 10,
-					variant: 'dark',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: true
-				},
-				{
-					system_name: 'System 3',
-					count: 10,
-					variant: 'dark',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: true
-				},
-				{
-					system_name: 'System 4',
-					count: 10,
-					variant: 'dark',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: true
-				},
-				{
-					system_name: 'System 5',
-					count: 10,
-					variant: 'primary',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: false
-				},
-				{
-					system_name: 'System 6',
-					count: 10,
-					variant: 'primary',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: false
-				},
-				{
-					system_name: 'System 6',
-					count: 10,
-					variant: 'primary',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: false
-				},
-				{
-					system_name: 'System 7',
-					count: 10,
-					variant: 'primary',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: false
-				},
-				{
-					system_name: 'System 8',
-					count: 10,
-					variant: 'primary',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: false
-				},
-				{
-					system_name: 'System 9',
-					count: 10,
-					variant: 'primary',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: false
-				},
-				{
-					system_name: 'System 10',
-					count: 10,
-					variant: 'primary',
-					icon: 'arrow-clockwise',
-					text:'white',
-					display: false
-				},
-
-			]
+			systems : []
 		}
 	},
 	mounted(){
+		this.$store.dispatch(GET_APPROVAL).then( () => {
+			this.systems = this.getSystems;
+		});
 		
+	},
+	updated(){
+	
 	},
 	methods: {
 		toggleSystems(){
 			var ctr = 0;
-
 			if(this.visibleCtr != this.systems.length){
 				this.systems.map( (data,index) => {
 					if(!data.display && ctr < 4){
@@ -144,7 +62,6 @@ export default {
 					}
 				});
 			}
-			
 		}
 	},
 	computed: {
@@ -156,7 +73,11 @@ export default {
 				}
 			});
 			return ctr;
-		}
+		},
+		...mapGetters([
+			'getSystems'
+		])
+	
 	}
 }
 </script>

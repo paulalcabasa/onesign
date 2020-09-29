@@ -45,9 +45,10 @@
 
         <!-- Main table element -->
             <b-table
+                show-empty
                 small
                 stacked="md"
-                :items="items"
+                :items="getApprovalList"
                 :fields="fields"
                 :current-page="currentPage"
                 :per-page="perPage"
@@ -59,23 +60,15 @@
                 @filtered="onFiltered"
             >
                 <template v-slot:cell(actions)="row">
-                    <b-link class="mr-1" :href="row.item.approve_url" target="_blank">
-                        Approve
+                    <b-link class="mr-1" :href="row.item.view_url" target="_blank">
+                        View details
                     </b-link>
-                    <b-link class="mr-1" :href="row.item.reject_url" target="_blank">
-                        Reject
-                    </b-link>
-                    <b-link class="mr-1" @click="info()">
-                        Info
-                    </b-link>
+                 
                 </template>
 
             </b-table>
 
-            <!-- Info modal -->
-            <b-modal :id="infoModal.id" :title="infoModal.title" ok-only @hide="resetInfoModal">
-                <pre>{{ infoModal.content }}</pre>
-            </b-modal>
+        
         </b-card-body>
 
         <b-card-footer>
@@ -123,130 +116,93 @@
                     </b-form-group>
                 </b-col>
                 <b-col sm="5" md="5" class="my-1">
-                    <b-pagination
+                        <b-pagination
                         v-model="currentPage"
                         :total-rows="totalRows"
                         :per-page="perPage"
                         align="fill"
                         size="sm"
                         class="my-0"
-                    ></b-pagination>
-                </b-col>
+                        ></b-pagination>
+                    </b-col> 
             </b-row>
         </b-card-footer>
     </b-card>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
-                items: [
-                    {
-                        system: 'PPS',
-                        description: 'New pps request',
-                        reference_no: 'PPS-2020-001',
-                        status: 'pending',
-                        request_date: '08/21/2020',
-                        approve_url: 'http://pps/approve/1',
-                        reject_url: 'http://pps/reject/1',
-                        details_url: 'http://pps/details/1'
-                    },
-                    {
-                        system: 'Courier Request',
-                        description: 'New courier request',
-                        reference_no: '0001',
-                        status: 'pending',
-                        request_date: '08/21/2020',
-                        approve_url: 'http://pps/approve/1',
-                        reject_url: 'http://pps/reject/1',
-                        details_url: 'http://pps/details/1'
-                    },
-                    {
-                        system: 'MIS Support',
-                        description: 'Mouse repair',
-                        reference_no: '0001',
-                        status: 'MIS Acknowledged',
-                        request_date: '08/21/2020',
-                        approve_url: 'http://pps/approve/1',
-                        reject_url: 'http://pps/reject/1',
-                        details_url: 'http://pps/details/1'
-                    },
-                  
-                  
-                   
-                ],
-                fields: [
-                    {
-                        key: 'system',
-                        label: 'System',
-                        sortable: true,
-                    },
-                    {
-                        key: 'description',
-                        label: 'Description',
-                        sortable: true,
-                    },
-                    {
-                        key: 'reference_no',
-                        label: 'Reference No.',
-                        sortable: true,
-                    },
-                    {
-                        key: 'status',
-                        label: 'Status',
-                        sortable: true,
-                    },
-                    {
-                        key: 'actions', 
-                        label: 'Actions' 
-                    }
-                ],
-                totalRows: 1,
-                currentPage: 1,
-                perPage: 5,
-                pageOptions: [5, 10, 15],
-                sortBy: '',
-                sortDesc: false,
-                sortDirection: 'asc',
-                filter: null,
-                filterOn: [],
-                infoModal: {
-                id: 'info-modal',
-                title: '',
-                content: ''
+
+import { mapGetters } from 'vuex';
+export default {
+    data() {
+        return {
+            items: [],
+            fields: [
+                {
+                    key: 'system',
+                    label: 'System',
+                    sortable: true,
+                },
+                {
+                    key: 'description',
+                    label: 'Description',
+                    sortable: true,
+                },
+                {
+                    key: 'reference_no',
+                    label: 'Reference No.',
+                    sortable: true,
+                },
+                {
+                    key: 'request_date',
+                    label: 'Date requested',
+                    sortable: true,
+                },
+                {
+                    key: 'status',
+                    label: 'Status',
+                    sortable: true,
+                },
+                {
+                    key: 'actions', 
+                    label: 'Actions' 
                 }
-            }
+            ],
+            totalRows: 1,
+            currentPage: 1,
+            perPage: 10,
+            pageOptions: [5, 10, 25, 50, 100],
+            sortBy: '',
+            sortDesc: false,
+            sortDirection: 'asc',
+            filter: null,
+            filterOn: [],
+        }
     },
     computed: {
-      sortOptions() {
-        // Create an options list from our fields
-        return this.fields
-          .filter(f => f.sortable)
-          .map(f => {
-            return { text: f.label, value: f.key }
-          })
-      }
+        sortOptions() {
+            // Create an options list from our fields
+            return this.fields
+                .filter(f => f.sortable)
+                .map(f => {
+                return { text: f.label, value: f.key }
+            })
+        },
+        // mix the getters into computed with object spread operator
+        ...mapGetters([
+            'getApprovalList',
+            // ...
+        ]),
     },
-    mounted() {
-      // Set the initial number of items
-      this.totalRows = this.items.length
+    updated() {
+        this.totalRows = this.getApprovalList.length;
     },
     methods: {
-      info(item, index, button) {
-        this.infoModal.title = `Row index: ${index}`
-        this.infoModal.content = JSON.stringify(item, null, 2)
-        this.$root.$emit('bv::show::modal', this.infoModal.id, button)
-      },
-      resetInfoModal() {
-        this.infoModal.title = ''
-        this.infoModal.content = ''
-      },
-      onFiltered(filteredItems) {
-        // Trigger pagination to update the number of buttons/pages due to filtering
-        this.totalRows = filteredItems.length
-        this.currentPage = 1
-      }
+        onFiltered(filteredItems) {
+            // Trigger pagination to update the number of buttons/pages due to filtering
+            this.totalRows = filteredItems.length
+            this.currentPage = 1
+        }
     }
-  }
+}
 </script>
