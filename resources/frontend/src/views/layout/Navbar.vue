@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-navbar toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand href="#">Isuzu OneSign</b-navbar-brand>
+            <b-navbar-brand href="#" @click.prevent="home">Isuzu OneSign</b-navbar-brand>
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -44,6 +44,12 @@ export default {
             this.$store.dispatch(LOGOUT).then( () => {
                 this.$router.push('login');
             })
+        },
+        profile(){
+            this.$router.push('profile');
+        },
+        home(){
+            this.$router.push('dashboard');
         }
     }
 }

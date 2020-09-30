@@ -1,20 +1,67 @@
 <template>
-    <div>
-        <b-card title="Profile" sub-title="Card subtitle">
-            <b-card-text>
-                Some quick example text to build on the <em>card title</em> and make up the bulk of the card's
-                content.
-            </b-card-text>
-
-            <b-card-text>A second paragraph of text in the card.</b-card-text>
-
-            <a href="#" class="card-link">Card link</a>
-            <b-link href="#" class="card-link">Another link</b-link>
-        </b-card>
+    <div class="profile">
+         <b-row>
+            <b-col md="6">
+                <b-card title="Profile">
+                    <b-card-body>
+                         <b-form>
+                            <b-form-group
+                                id="input-group-1"
+                                label="Employee No."
+                                label-for="input-1"
+                            >
+                                <b-form-input
+                                    id="input-1"
+                                    :value="getUser.employee_no"
+                                    type="text"
+                                    readonly="readonly"
+                                    placeholder="Enter email"
+                                ></b-form-input>
+                            </b-form-group>
+                            <b-form-group
+                                id="input-group-1"
+                                label="Name"
+                                label-for="input-1"
+                            >
+                                <b-form-input
+                                    id="input-1"
+                                    :value="getUser.first_name + ' ' + getUser.last_name"
+                                    type="text"
+                                    readonly="readonly"
+                                ></b-form-input>
+                            </b-form-group>
+                            <b-form-group
+                                id="input-group-1"
+                                label="Position"
+                                label-for="input-1"
+                            >
+                                <b-form-input
+                                    id="input-1"
+                                    :value="getUser.position_title"
+                                    type="text"
+                                    readonly="readonly"
+                                ></b-form-input>
+                            </b-form-group>
+                         </b-form>
+                    </b-card-body>
+                </b-card>
+            </b-col>
+        </b-row>
+        
     </div>
 </template>
+<style scoped>
+.profile {
+    text-align: left;
+}
+</style>
 <script>
+import { mapGetters } from 'vuex';
 export default {
-    
+    computed: {
+        ...mapGetters([
+            'getUser',
+        ])
+    },
 }
 </script>

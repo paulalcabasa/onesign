@@ -1,6 +1,10 @@
 <template>
 	<div>
 		<div>
+			<loading :active.sync="isLoading" 
+			:can-cancel="true" 
+			:on-cancel="onCancel"
+			:is-full-page="fullPage"></loading>
 			<b-row>
 				<b-col md="3" lg="3" sm="3" v-for="(system, index) in systems" :key="index" v-show="system.display">
 					<Statistics
@@ -12,7 +16,7 @@
 					/>
 				</b-col>
 			</b-row>
-			<b-link class="mt-3" @click="toggleSystems">{{ visibleCtr == systems.length ? 'Hide' : 'Show more'}}</b-link>
+			<b-link class="mt-3" @click="toggleSystems" v-if="systems.length >= 5">{{ visibleCtr == systems.length ? 'Hide' : 'Show more'}}</b-link>
 			<Approval></Approval>
 		</div>
 	</div>
@@ -23,20 +27,27 @@ import Statistics from '@/components/Statistics.vue';
 import Approval from '@/components/Approval.vue';
 import { mapGetters } from 'vuex';
 import { GET_APPROVAL } from '@/store/approval.module';
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 export default {
 	components : {
 		Statistics,
-		Approval
+		Approval,
+		Loading
 	},
 	data() { 
 		return {
-			systems : []
+			systems : [],
+			isLoading: false,
+			fullPage: true
 		}
 	},
 	mounted(){
+		this.isLoading = true;
 		this.$store.dispatch(GET_APPROVAL).then( () => {
 			this.systems = this.getSystems;
+			this.isLoading = false;
 		});
 		
 	},

@@ -46,8 +46,10 @@
         <!-- Main table element -->
             <b-table
                 show-empty
-                small
+                :small="true"
+                class='approval-table'
                 stacked="md"
+                :head-variant="'dark'"
                 :items="getApprovalList"
                 :fields="fields"
                 :current-page="currentPage"
@@ -61,9 +63,8 @@
             >
                 <template v-slot:cell(actions)="row">
                     <b-link class="mr-1" :href="row.item.view_url" target="_blank">
-                        View details
-                    </b-link>
-                 
+                        View 
+                    </b-link>                 
                 </template>
 
             </b-table>
@@ -130,6 +131,18 @@
     </b-card>
 </template>
 
+<style>
+.data-style {
+    font-size:90%;
+    text-align: left;
+}
+
+.header-style {
+    white-space: nowrap;
+    text-align:center !important;
+    font-size:90%;
+}
+</style>
 <script>
 
 import { mapGetters } from 'vuex';
@@ -139,34 +152,47 @@ export default {
             items: [],
             fields: [
                 {
+                    key: 'actions', 
+                    label: 'Actions' ,
+                    thClass : 'header-style',
+                    tdClass : 'data-style',
+                },
+                {
                     key: 'system',
                     label: 'System',
                     sortable: true,
+                    thClass : 'header-style',
+                    tdClass : 'data-style',
                 },
                 {
                     key: 'description',
                     label: 'Description',
                     sortable: true,
+                    tdClass : 'data-style',
+                    thClass : 'header-style',
                 },
                 {
                     key: 'reference_no',
                     label: 'Reference No.',
                     sortable: true,
+                    thClass : 'header-style',
+                    tdClass : 'data-style',
                 },
                 {
                     key: 'request_date',
                     label: 'Date requested',
                     sortable: true,
+                    thClass : 'header-style',
+                    tdClass : 'data-style',
                 },
                 {
                     key: 'status',
                     label: 'Status',
                     sortable: true,
+                    thClass : 'header-style',
+                    tdClass : 'data-style',
                 },
-                {
-                    key: 'actions', 
-                    label: 'Actions' 
-                }
+                
             ],
             totalRows: 1,
             currentPage: 1,

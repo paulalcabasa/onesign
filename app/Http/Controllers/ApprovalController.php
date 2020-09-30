@@ -31,7 +31,7 @@ class ApprovalController extends Controller
         $pending = [];
 
         foreach($apiUrls as $api){
-            $client = new \GuzzleHttp\Client();
+            $client = new \GuzzleHttp\Client(["verify" => false]);
             $request = $client->request('GET', $api->api_url . $this->user->employee_no);
             $response = $request->getBody();
             $data = json_decode($response);
