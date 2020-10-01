@@ -2,8 +2,6 @@
 	<div>
 		<div>
 			<loading :active.sync="isLoading" 
-			:can-cancel="true" 
-			:on-cancel="onCancel"
 			:is-full-page="fullPage"></loading>
 			<b-row>
 				<b-col md="3" lg="3" sm="3" v-for="(system, index) in systems" :key="index" v-show="system.display">

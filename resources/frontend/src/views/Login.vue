@@ -1,14 +1,18 @@
 <template>
     <div class="login-wrapper">
+        
     <div class="outer">
         <div class="middle">
             <div class="inner">
+
+                <loading :active.sync="isLoading" 
+                :is-full-page="fullPage"></loading>
+
                 <h1 class="text-center">OneSign</h1>
                 <b-card variant="primary">
                     <b-form>
-                      
+                       <b-alert variant="danger" show v-if="message != ''">{{ message }}</b-alert>
                         <b-input-group
-                         
                             class="mb-3"
                         > 
                             <b-input-group-prepend>
@@ -29,7 +33,7 @@
 
 
                         <b-btn variant="primary" @click="submit">Sign in</b-btn>
-                        <b-link href="#" @click.prevent="test" class="float-right">Forgot your password?</b-link>
+                       <!--  <b-link href="#" @click.prevent="test" class="float-right">Forgot your password?</b-link> -->
                       </b-form>
                 </b-card>
             </div>
@@ -67,49 +71,56 @@
 <script>
 
 import { LOGIN } from "@/store/auth.module";
-
-
+import Loading from 'vue-loading-overlay';
+import { mapGetters, mapState } from 'vuex'; 
+import 'vue-loading-overlay/dist/vue-loading.css';
 export default {
+    components : {
+        Loading
+    },
+    computed: {
+        ...mapGetters([
+            'getMessage'
+        ]),
+        ...mapState({
+            message: state => state.auth.message,
+            isAuthenticated: state => state.auth.isAuthenticated
+        })
+    },
 	data() {
 		return {
 			name: '',
 			username: '',
-			password: ''
+            password: '',
+            isLoading: false,
+            fullPage: true
 		}
     },
     mounted() {
-        if(this.$store.getters.isAuthenticated){
-            this.$router.push({ name: "dashboard" });
-        }
+     
     },
+    updated(){
+      /*   if(this.getMessage != ""){
+            this.isLoading = false;
+        } */
+    },
+ 
 	methods : {
        
 		submit(){
+         //   alert("submit");
             const username = this.username;
             const password = this.password;
+            this.isLoading = true;
             this.$store.dispatch(LOGIN, { username, password }).then( () => {
-                this.$router.push('dashboard');
+                if(this.isAuthenticated){
+                    this.$router.push('dashboard');
+                }
+                this.isLoading = false;
             });
         },
     
 	},
-	computed: {
-		state() {
-			return this.name.length >= 4 ? true : false
-		},
-		invalidFeedback() {
-			if (this.name.length > 4) {
-				return ''
-			} else if (this.name.length > 0) {
-				return 'Enter at least 4 characters'
-			} else {
-				return 'Please enter something'
-			}
-		},
-		validFeedback() {
-			return this.state === true ? 'Thank you' : ''
-		}
-	},
-    
+	
   }
 </script>

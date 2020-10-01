@@ -13,12 +13,11 @@ export const SET_USER = "setUser";
 export const PURGE_AUTH = "purgeAuth";
 
 const state = {
-    isAuthenticated : !!tokenService.getToken(),
+    isAuthenticated : false,
     user : {},
     token: '',
     message : '',
     error : {},
-    testVar : 'paul'
 };
 
 const getters = {
@@ -27,6 +26,9 @@ const getters = {
     },
     getUser(state) {
         return state.user;
+    },
+    getMessage(state) {
+        return state.message;
     }
 };
 
@@ -36,10 +38,10 @@ const actions = {
             axios.post('api/auth/login', credentials).then(res => {
                 context.commit(SET_AUTH, res.data.access_token);
                 resolve(res);
-            }).catch(err => {
+            }).catch(error => {
                 context.commit(SET_MESSAGE, 'You have entered an incorrect username or password');
-                context.commit(SET_ERROR, err);
-                resolve(err);
+                context.commit(SET_ERROR, error);
+                resolve(error);
             });
         });
     },
@@ -58,6 +60,7 @@ const actions = {
             });
         }
         else {
+            context.commit(SET_MESSAGE, '');
             context.commit(PURGE_AUTH);
         }  
     }
@@ -68,14 +71,14 @@ const mutations = {
         state.isAuthenticated = true;
         tokenService.saveToken(token);
     }, 
+    [SET_MESSAGE](state, message) {
+        state.message = message;
+    },
     [SET_ERROR](state, error) {
         state.error = error;
     },
     [SET_USER](state, user) {
         state.user = user;
-    },
-    [SET_MESSAGE](state, message) {
-        state.message = message
     },
     [PURGE_AUTH](state) {
         state.isAuthenticated = false;
@@ -86,8 +89,8 @@ const mutations = {
 };
 
 export default {
-  state,
-  actions,
-  mutations,
-  getters
+    state,
+    actions,
+    mutations,
+    getters
 };

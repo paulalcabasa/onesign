@@ -35,8 +35,7 @@ class ApprovalController extends Controller
             $request = $client->request('GET', $api->api_url . $this->user->employee_no);
             $response = $request->getBody();
             $data = json_decode($response);
-          
-       
+    
             foreach($data as $row){
                 array_push($pending, [
                     'system'  => $api->system_name,

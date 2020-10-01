@@ -32,11 +32,11 @@ axios.interceptors.request.use(function (config) {
 });
 
 // refresh token
-const refreshAuthLogic = failedRequest => axios.post('api/auth/refresh').then(tokenRefreshResponse => {
+ const refreshAuthLogic = failedRequest => axios.post('api/auth/refresh').then(tokenRefreshResponse => {
   tokenService.saveToken(tokenRefreshResponse.data.access_token);
   failedRequest.response.config.headers['Authorization'] = 'Bearer ' + tokenRefreshResponse.data.access_token;
   return Promise.resolve();
-});
+}); 
 
 createAuthRefreshInterceptor(axios, refreshAuthLogic);
 
