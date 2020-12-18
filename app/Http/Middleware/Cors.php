@@ -19,10 +19,9 @@ class Cors
       
         $domains = [
             'http://localhost:8080',
-            'http://localhost:8000',
-            'http://localhost/vip_coupon',
-            'http://idh.isuzuphil.com/vip_coupon',
-            'http://ecommerce4/vip_coupon'
+            'http://localhost/onesign',
+            'http://localhost:8080/onesign',
+            'http://idh.isuzuphil.com/onesign'
         ];
 
         if(isset($request->server()['HTTP_ORIGIN'])) {

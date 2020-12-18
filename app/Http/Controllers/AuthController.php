@@ -39,8 +39,13 @@ class AuthController extends Controller
         }
         
         $userToken = JWTAuth::fromUser($user);
-      
-        return $this->respondWithToken($userToken);
+        return response()->json([
+            'token' => $userToken,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60,
+            'user' => $user
+        ]);
+        //return $this->respondWithToken($userToken);
     }
 
     /**
